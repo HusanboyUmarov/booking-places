@@ -14,12 +14,33 @@ import { Category } from './categories/models/category.model';
 import { Confort } from './confort/models/confort.model';
 import { District } from './district/models/district.model';
 import { Region } from './region/models/region.model';
+import { MailModule } from './mail/mail.module';
+import { BotModule } from './bot/bot.module';
+import {TelegrafModule} from 'nestjs-telegraf'
+import { BOT_NAME } from './app.constants';
+import { Bot } from './bot/model/bot.model';
+import { OtpModule } from './otp/otp.module';
+import { Otp } from './otp/models/otp.model';
+import { AdminModule } from './admin/admin.module';
+import { Admin } from './admin/models/admin.model';
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [
+    
+    ConfigModule.forRoot({
     envFilePath:'.env',
     isGlobal:true
   }),
+  TelegrafModule.forRootAsync({
+    botName:BOT_NAME, 
+    useFactory:()=>({
+      token:process.env.BOT_TOKEN,
+      middlewares:[],
+      include:[BotModule]
+    })
+
+  }),
+
   SequelizeModule.forRoot({
      dialect:'postgres',
      port: Number(process.env.POSTGRES_PORT),
@@ -32,7 +53,11 @@ import { Region } from './region/models/region.model';
       Category, 
       Confort, 
       District, 
-      Region],
+      Region,
+      Bot,
+      Otp,
+      Admin
+    ],
      autoLoadModels:true,
      logging:true
   }),
@@ -40,7 +65,12 @@ import { Region } from './region/models/region.model';
   CategoriesModule,
   ConfortModule,
   RegionModule,
-  DistrictModule,],
+  DistrictModule,
+  MailModule,
+  BotModule,
+  OtpModule,
+  AdminModule,
+],
   controllers: [AppController],
   providers: [AppService],
 })
