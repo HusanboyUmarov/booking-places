@@ -6,11 +6,15 @@ import {Response, Request} from 'express'
 import { LoginDto } from './dto/login-user.dto';
 import { cookieGetter } from 'src/decorators/cookieGetter.decorator';
 import { PhoneUserDto } from './dto/phoneuserDto';
+import { Logger } from '@nestjs/common/services';
 
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly logger:Logger
+    ) {}
   @Post('signout')
   async signOut(
     @cookieGetter('refresh token') refreshtoken:string,
@@ -22,6 +26,18 @@ export class UsersController {
 
   @Post('login')
   async login(@Body() loginDto:LoginDto){
+    this.logger.log('Calling login()', UsersController.name)
+    this.logger.debug('Calling login()', UsersController.name)
+    this.logger.verbose('Calling login()', UsersController.name)
+    this.logger.warn('Calling login()', UsersController.name)
+
+    try {
+      throw new Error();
+
+    } catch (error) {
+      this.logger.error('Calling signIn', error.stack, UsersController.name)
+      
+    }
     return this.usersService.login(loginDto)
   }
 

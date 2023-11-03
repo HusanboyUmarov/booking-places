@@ -3,10 +3,13 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser'
+import { LoggerFactory } from './logger/loggerFactory';
 
 const start = async()=>{
 try {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger:LoggerFactory('Stadium')
+  });
   // app.useGlobalPipes(new ValidationPipe())
   app.setGlobalPrefix('api')
 

@@ -8,6 +8,7 @@ import { MailModule } from 'src/mail/mail.module';
 import { BotModule } from 'src/bot/bot.module';
 import { OtpModule } from 'src/otp/otp.module';
 import { Otp } from 'src/otp/models/otp.model';
+import { Logger } from '@nestjs/common/services';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { Otp } from 'src/otp/models/otp.model';
     OtpModule
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, Logger],
   
 })
 export class UsersModule {}
